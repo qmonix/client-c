@@ -27,16 +27,16 @@ RANLIB = ranlib
 
 
 SRC_DIR = src
+LIB_DIR = lib
 BUILD_DIR = build
 
 QMONIX_CLIENT_A = libqmonix_client.a
 
-# Collect oll *.o files to build.
+# Collect all *.o files to build.
 OBJS := $(shell find $(SRC_DIR) -name '*.c')
-OBJS := $(OBJS:.c=.o)
+OBJS := $(OBJS:.c=.o) json.o
 OBJS := $(OBJS:$(SRC_DIR)/%=%)
 OBJS := $(addprefix $(BUILD_DIR)/, $(OBJS))
-
 
 all: static-lib
 .PHONY: all
@@ -52,6 +52,10 @@ $(BUILD_DIR)/$(QMONIX_CLIENT_A): $(OBJS)
 
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
+	mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+build/json.o: lib/json/json.c lib/json/json.h
 	mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 
