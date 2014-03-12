@@ -53,6 +53,8 @@ typedef struct
 	char *start;
 } SB;
 
+#define sb_static_init {NULL, NULL, NULL}
+
 static void sb_init(SB *sb)
 {
 	sb->start = (char*) malloc(17);
@@ -793,7 +795,7 @@ failure:
 bool parse_string(const char **sp, char **out)
 {
 	const char *s = *sp;
-	SB sb;
+	SB sb = sb_static_init;
 	char throwaway_buffer[4];
 		/* enough space for a UTF-8 character */
 	char *b;
